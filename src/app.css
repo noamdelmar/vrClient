@@ -1,0 +1,11 @@
+@font-face {
+    font-family: "Almoni";
+    /*Can be any text*/
+    src: local("Almoni"),
+      url("./assets/fonts/AlmoniLight.ttf") format("truetype");
+  }
+  
+  body,
+  html {
+    font-family: "Almoni";
+  }
