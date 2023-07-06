@@ -8,6 +8,8 @@
 body,
 html {
   font-family: "Almoni";
+  overflow-y: hidden;
+  overflow-x: hidden;
 }
 
 .popup-container-animate-out {
