@@ -1,11 +1,53 @@
 @font-face {
-    font-family: "Almoni";
-    /*Can be any text*/
-    src: local("Almoni"),
-      url("./assets/fonts/AlmoniLight.ttf") format("truetype");
+  font-family: "Almoni";
+  /*Can be any text*/
+  src: local("Almoni"),
+    url("./assets/fonts/AlmoniLight.ttf") format("truetype");
+}
+
+body,
+html {
+  font-family: "Almoni";
+}
+
+.popup-container-animate-out {
+  -webkit-animation: fadeOutFlyOutMode .3s ease;
+  -moz-animation: fadeOutFlyOutMode .3s ease;
+  -ms-animation: fadeOutFlyOutMode .3s ease;
+  animation: fadeOutFlyOutMode .3s ease;
+  -webkit-animation-fill-mode: forwards;
+  -moz-animation-fill-mode: forwards;
+  -ms-animation-fill-mode: forwards;
+  animation-fill-mode: forwards;
+}
+
+.popup-container-animate-in {
+  -webkit-animation-name: fadeInFlyInMode;
+  -moz-animation-name: fadeInFlyInMode;
+  -ms-animation-name: fadeInFlyInMode;
+  animation-name: fadeInFlyInMode;
+}
+
+@keyframes fadeOutFlyOutMode {
+  0% {
+    opacity: 1;
+    transform: translate(50%);
   }
-  
-  body,
-  html {
-    font-family: "Almoni";
+
+  to {
+    opacity: 0;
+    transform: translate(50%, -2.8125rem);
   }
+}
+
+@keyframes fadeInFlyInMode {
+  0% {
+    opacity: 0;
+    transform: translate(50%, -2.8125rem);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate(50%);
+  }
+}

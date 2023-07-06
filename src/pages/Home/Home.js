@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { MenuContainer, MenuItem } from './styles';
 import httpCommon from '../../services/http-common';
+import { Navigate } from "react-router-dom";
 
 export default function Home() {
     const [selectedFile, setSelectedFile] = useState(null);
+    const [navigateTo, setNavigateTo] = useState();
 
     const handleFileChange = (event) => {
         setSelectedFile(event.target.files[0]);
     };
+
 
     //TAGS FUNCTIONS
     const createTag = async () => {
@@ -281,7 +284,7 @@ export default function Home() {
         <>
             <MenuContainer>
                 <MenuItem onClick={() => testFunctions()} selected={true}>מתחילים</MenuItem>
-                <MenuItem>שימוש</MenuItem>
+                <MenuItem onClick={() => setNavigateTo('/tikTok')}>שימוש</MenuItem>
                 <MenuItem>מוצרים</MenuItem>
                 <MenuItem>תקלות</MenuItem>
             </MenuContainer>
@@ -290,6 +293,7 @@ export default function Home() {
                 <button onClick={createGame}>Upload File</button>
             </div>
             <img src={`data:image/jpeg;base64,${selectedFile}`} alt="File" />
+            {navigateTo ? <Navigate to={navigateTo} replace={true} /> : null}
         </>
     )
 }
