@@ -4,12 +4,13 @@ import FaultPopup from '../../components/CreatePopup/popup/FaultPopup';
 import TypePopup from '../../components/CreatePopup/popup/TypePopup';
 import { useAppContext } from '../../context/popup/popup_context_provider';
 import httpCommon from '../../services/http-common';
-import { PopupBack } from '../Home/styles';
+import { PopupBack, Container } from '../Home/styles';
 import SideBar from '../../components/SideBar/SideBar'
+import Games from './Games';
 
 export default function Admin() {
     const { showPopup, hidePopup, isPopupShown } = useAppContext();
-    const [selectedPage, setSelctedPage] = useState();
+    const [selectedPage, setSelctedPage] = useState('games');
 
     const handleFileUpload = async (image) => {
         try {
@@ -58,16 +59,17 @@ export default function Admin() {
     console.log(isPopupShown);
 
     return (
-        <>
+        <Container>
             <SideBar setPage={setSelctedPage} selectedPage={selectedPage} />
             {selectedPage == 'games' ?
-                <div onClick={() => showPopup(<GamePopup name='יצירת משחק' handleFileUpload={handleFileUpload} hidePopup={hidePopup} />)}>יצירת משחק</div>
+                <Games handleFileUpload={handleFileUpload} />
+                // <div onClick={() => showPopup(<GamePopup name='יצירת משחק' handleFileUpload={handleFileUpload} hidePopup={hidePopup} />)}>יצירת משחק</div>
                 : selectedPage == 'fault' ? <div onClick={() => showPopup(<FaultPopup name='יצירת תקלה' handleFileUpload={handleFileUpload} hidePopup={hidePopup} />)}>יצירת תקלה</div>
                     : selectedPage == 'faultType' ? <div onClick={() => showPopup(<TypePopup name='יצירת קטגוריה' submit={createTag} hidePopup={hidePopup} />)}>יצירת קטגוריה</div>
                         : <div onClick={() => showPopup(<TypePopup name='יצירת סוג תקלה' submit={createFaultType} hidePopup={hidePopup} />)}>יצירת סוג תקלה</div>
             }
             <PopupBack show={isPopupShown} onClick={() => hidePopup()}></PopupBack>
             {/* <div onClick={() => showPopup(<CreatePopup name='יצירת קטגוריה' data={TAG} submit={createTag} />)}>יצירת קטגוריה</div> */}
-        </>
+        </Container>
     )
 }

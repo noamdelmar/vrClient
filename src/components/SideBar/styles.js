@@ -1,12 +1,14 @@
 import styled from 'styled-components';
 
 export const Container = styled.div(() => ({
-    width: '20rem',
+    width: '20%',
     height: '100vh',
     borderLeft: '1px solid #ebebf1',
     position: 'fixed',
     top: '0',
     right: '0',
+    zIndex: '1',
+    backgroundColor: 'white'
 }));
 
 export const Route = styled.div((props) => ({
