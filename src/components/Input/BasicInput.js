@@ -1,16 +1,20 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { NameField, FlexContainer } from './styles';
 import Input from '@mui/material/Input';
 
-export default function BasicInput({ values, name, value, type = null }) {
+export default function BasicInput({ values, title, name, type = null }) {
+    const [fieldValue, setFieldValue] = useState(values[name]);
+
     const handleChange = (e) => {
-        values[e.target.name] = e.target.value
-    }
+        setFieldValue(e.target.value);
+        values[name] = e.target.value;
+    };
+
+
     return (
         <FlexContainer>
-            <NameField>{name}</NameField>
-            <Input name={value} onChange={handleChange} type={type} multiline />
+            <NameField>{title}</NameField>
+            <Input name={name} onChange={handleChange} type={type} value={fieldValue} multiline />
         </FlexContainer>
-
-    )
+    );
 }

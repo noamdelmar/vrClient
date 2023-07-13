@@ -5,7 +5,7 @@ import httpCommon from '../../services/http-common';
 import { GamesContainer, Container } from './styles';
 import ProductRow from '../../components/ProductRow/ProductRow';
 
-export default function Games({ handleFileUpload }) {
+export default function Games({ handleFileUpload, handleFileUpdate }) {
     const { showPopup, hidePopup } = useAppContext();
     const [existingGames, setGames] = useState();
 
@@ -25,15 +25,29 @@ export default function Games({ handleFileUpload }) {
         }
         getGames()
     }, [])
+
+    const createGame = async (form) => {
+        try {
+            form['image'] = await handleFileUpload(form.image)
+            console.log(form['image']);
+            const res = await httpCommon.post('/games/create', form);
+            hidePopup()
+
+        } catch (err) {
+            console.error('error creating game', err);
+        }
+    }
+
+
     return (
         <Container>
             <GamesContainer>
                 <div>משחקים</div>
                 {existingGames?.map((game) => {
-                    return <ProductRow game={game} />
+                    return <ProductRow game={game} handleFileUpdate={handleFileUpdate} />
                 })}
             </GamesContainer>
-            <div onClick={() => showPopup(<GamePopup name='יצירת משחק' handleFileUpload={handleFileUpload} hidePopup={hidePopup} />)}>יצירת משחק</div>
+            <div onClick={() => showPopup(<GamePopup name='יצירת משחק' submit={createGame} />)}>יצירת משחק</div>
         </Container>
     )
 }

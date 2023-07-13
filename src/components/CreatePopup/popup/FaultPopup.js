@@ -11,7 +11,7 @@ export default function FaultPopup({ name, handleFileUpload, hidePopup }) {
 
     const createFault = async (form) => {
         try {
-            form['imageId'] = await handleFileUpload(form.imageId)
+            form['image'] = await handleFileUpload(form.image)
             const res = await httpCommon.post('/faults/create', form);
             hidePopup()
 
@@ -37,7 +37,7 @@ export default function FaultPopup({ name, handleFileUpload, hidePopup }) {
             <BasicInput values={values} name='שם' value='name' />
             <BasicInput values={values} name='תיאור' value='description' />
             <BasicInput values={values} name='פתרון' value='solution' />
-            <FileInput values={values} name='תמונה' value='imageId' />
+            <FileInput values={values} name='תמונה' value='image' />
             <SelectInput values={values} name='קטגוריה' data={faultType} value='typeId' />
             <div onClick={() => createFault(values)}>submit</div>
         </>

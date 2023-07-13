@@ -27,11 +27,33 @@ export default function Admin() {
                     'Content-Type': 'multipart/form-data',
                 },
             });
-            console.log(res);
 
             return res.data.id
         } catch (error) {
             console.error('Error uploading file:', error);
+        }
+    }
+
+    const handleFileUpdate = async (id, image) => {
+        try {
+            if (!image) {
+                console.error('No file selected');
+                return;
+            }
+            const formData = new FormData();
+            formData.append('file', image);
+
+
+            const res = await httpCommon.put(`/files/update?id=${id}`, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            }
+            )
+            console.log(res);
+            return res.data.id
+        } catch (err) {
+            console.error('Error updating file: ', err);
         }
     }
 
@@ -56,13 +78,12 @@ export default function Admin() {
         }
 
     }
-    console.log(isPopupShown);
 
     return (
         <Container>
             <SideBar setPage={setSelctedPage} selectedPage={selectedPage} />
             {selectedPage == 'games' ?
-                <Games handleFileUpload={handleFileUpload} />
+                <Games handleFileUpload={handleFileUpload} handleFileUpdate={handleFileUpdate} />
                 // <div onClick={() => showPopup(<GamePopup name='יצירת משחק' handleFileUpload={handleFileUpload} hidePopup={hidePopup} />)}>יצירת משחק</div>
                 : selectedPage == 'fault' ? <div onClick={() => showPopup(<FaultPopup name='יצירת תקלה' handleFileUpload={handleFileUpload} hidePopup={hidePopup} />)}>יצירת תקלה</div>
                     : selectedPage == 'faultType' ? <div onClick={() => showPopup(<TypePopup name='יצירת קטגוריה' submit={createTag} hidePopup={hidePopup} />)}>יצירת קטגוריה</div>
