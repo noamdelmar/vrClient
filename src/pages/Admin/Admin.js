@@ -7,10 +7,13 @@ import httpCommon from '../../services/http-common';
 import { PopupBack, Container } from '../Home/styles';
 import SideBar from '../../components/SideBar/SideBar'
 import Games from './Games';
+import Tags from './Tags';
+import FaultType from './FaultType';
+import Fault from './Fault';
 
 export default function Admin() {
     const { showPopup, hidePopup, isPopupShown } = useAppContext();
-    const [selectedPage, setSelctedPage] = useState('games');
+    const [selectedPage, setSelctedPage] = useState('fault');
 
     const handleFileUpload = async (image) => {
         try {
@@ -61,11 +64,9 @@ export default function Admin() {
         try {
             const res = await httpCommon.post('tags/create', form)
             hidePopup()
-            console.log(res)
         } catch (err) {
             console.error('error creating tag:', err);
         }
-
     }
 
     const createFaultType = async (form) => {
@@ -85,9 +86,15 @@ export default function Admin() {
             {selectedPage == 'games' ?
                 <Games handleFileUpload={handleFileUpload} handleFileUpdate={handleFileUpdate} />
                 // <div onClick={() => showPopup(<GamePopup name='יצירת משחק' handleFileUpload={handleFileUpload} hidePopup={hidePopup} />)}>יצירת משחק</div>
-                : selectedPage == 'fault' ? <div onClick={() => showPopup(<FaultPopup name='יצירת תקלה' handleFileUpload={handleFileUpload} hidePopup={hidePopup} />)}>יצירת תקלה</div>
-                    : selectedPage == 'faultType' ? <div onClick={() => showPopup(<TypePopup name='יצירת קטגוריה' submit={createTag} hidePopup={hidePopup} />)}>יצירת קטגוריה</div>
-                        : <div onClick={() => showPopup(<TypePopup name='יצירת סוג תקלה' submit={createFaultType} hidePopup={hidePopup} />)}>יצירת סוג תקלה</div>
+                : selectedPage == 'fault' ?
+                    <Fault handleFileUpload={handleFileUpload} handleFileUpdate={handleFileUpdate} />
+                    // <div onClick={() => showPopup(<FaultPopup name='יצירת תקלה' handleFileUpload={handleFileUpload} hidePopup={hidePopup} />)}>יצירת תקלה</div>
+                    : selectedPage == 'faultType' ?
+                        <FaultType />
+                        //  <div onClick={() => showPopup(<TypePopup name='יצירת קטגוריה' submit={createTag} hidePopup={hidePopup} />)}>יצירת קטגוריה</div>
+                        :
+                        <Tags />
+                // <div onClick={() => showPopup(<TypePopup name='יצירת סוג תקלה' submit={createFaultType} hidePopup={hidePopup} />)}>יצירת סוג תקלה</div>
             }
             <PopupBack show={isPopupShown} onClick={() => hidePopup()}></PopupBack>
             {/* <div onClick={() => showPopup(<CreatePopup name='יצירת קטגוריה' data={TAG} submit={createTag} />)}>יצירת קטגוריה</div> */}

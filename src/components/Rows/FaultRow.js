@@ -2,46 +2,43 @@ import React, { useEffect, useState } from 'react';
 import { Container, Item, Image, DropDown, DropItem } from './styles';
 import httpCommon from '../../services/http-common';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
-import GamePopup from '../CreatePopup/popup/GamePopup';
+import FaultPopup from '../CreatePopup/popup/FaultPopup';
 import { useAppContext } from '../../context/popup/popup_context_provider';
 
-export default function ProductRow({ game, handleFileUpdate }) {
+export default function GameRow({ fault, handleFileUpdate }) {
+    const { showPopup, hidePopup } = useAppContext();
     const [image, setImage] = useState();
     const [open, setOpen] = useState(false);
-    const { showPopup, hidePopup } = useAppContext();
-    const imageId = game['image'];
+    const [faultType, setFaultType] = useState();
+    const imageId = fault['image'];
 
     useEffect(() => {
-        if (game.image) {
+        if (fault.image) {
             const getFiles = async () => {
                 try {
-                    let id = game.image;
+                    let id = fault.image;
                     const res = await httpCommon.get(`/files/get?id=${id}`)
                     setImage(res.data.content)
                 } catch (err) {
                     console.error('Error geting file: ', err);
                 }
             }
-            const getTag = async () => {
+            const getFaultTypes = async () => {
                 try {
-                    const response = await httpCommon.get('/gameTags/get', {
-                        params: {
-                            name: 'game_id',
-                            value: game['id']
-                        }
-                    });
-                    const data = response.data;
-                    console.log(data);
+                    const res = await httpCommon.get(`/faultTypes/get?id=${fault['type']}`)
+                    setFaultType(res.data['name']);
                 } catch (err) {
-                    console.error('Error retrieving game tag:', err);
+                    console.error('error retrieving fault types: ', err);
                 }
             }
-            getTag()
+
+            getFaultTypes()
             getFiles()
         }
     }, [])
 
-    const updateGame = (update) => {
+    const updateFault = (update) => {
+        console.log(update);
         const updateData = Object.keys(update);
         const dataArray = updateData.map(key => {
             if (key === 'image') {
@@ -53,13 +50,14 @@ export default function ProductRow({ game, handleFileUpdate }) {
         });
         dataArray.map(async (data) => {
             try {
-                await httpCommon.put('/games/update', data);
+                await httpCommon.put('/faults/update', data);
                 hidePopup()
             } catch (err) {
-                console.error('error updating game', err);
+                console.error('error updating fault', err);
             }
         });
     };
+
     const updateFile = async (image) => {
         try {
             await handleFileUpdate(imageId, image);
@@ -70,28 +68,27 @@ export default function ProductRow({ game, handleFileUpdate }) {
     };
 
     const deleteGame = async () => {
-        // try {
-        //     const id = game.id;
-        //     const res = await httpCommon.delete(`/games/delete?id=${id}`);
-        //     console.log(res);
-        // } catch (err) {
-        //     console.error('error deleting game: ', err);
-        // }
+        try {
+            const id = fault.id;
+            const res = await httpCommon.delete(`/faults/delete?id=${id}`);
+            console.log(res);
+        } catch (err) {
+            console.error('error deleting fault: ', err);
+        }
     }
 
     return (
         <Container>
-            <Item>{game.name}</Item>
-            <Item>{game.description}</Item>
+            <Item>{fault.name}</Item>
+            <Item>{fault.description}</Item>
+            <Item>{fault.solution}</Item>
             <Item><Image src={`data:image/jpeg;base64,${image}`} /></Item>
-            <Item>{game.estimated_time}</Item>
-            <Item>{game.estimated_time}</Item>
-            <Item>פרסם/הסתר</Item>
+            <Item>{faultType}</Item>
             <Item styles={{ color: '#d3d3d4' }} onMouseOver={() => setOpen(true)} onMouseOut={() => setOpen(false)} >
                 <MoreHorizIcon />
                 {open ?
                     <DropDown>
-                        <DropItem onClick={() => showPopup(<GamePopup name='עריכת משחק' submit={updateGame} game={game} />)}>edit</DropItem>
+                        <DropItem onClick={() => showPopup(<FaultPopup name='עריכת תקלה' existingFault={fault} submit={updateFault} />)}>edit</DropItem>
                         <DropItem onClick={() => deleteGame()}>delete</DropItem>
                     </DropDown> : null
                 }

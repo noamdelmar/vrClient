@@ -4,7 +4,8 @@ import { FlexContainer, NameField } from './styles';
 export default function SelectInput({ values, name, data, value }) {
 
     const handleChange = (e) => {
-        values[e.target.name] = values[e.target.name] ? values[e.target.name].push(e.target.value) : [e.target.value]
+        values[value] = e.target.value
+        // values[e.target.name] = values[e.target.name] ? values[e.target.name].push(e.target.value) : [e.target.value]
     }
 
     return (

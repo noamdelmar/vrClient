@@ -5,20 +5,10 @@ import FileInput from '../../Input/FileInput';
 import SelectInput from '../../Input/SelectInput';
 import httpCommon from '../../../services/http-common';
 
-export default function FaultPopup({ name, handleFileUpload, hidePopup }) {
+export default function FaultPopup({ name, submit, existingFault }) {
     const [faultType, setFaultType] = useState();
-    const values = {};
+    const values = existingFault ? existingFault : {};
 
-    const createFault = async (form) => {
-        try {
-            form['image'] = await handleFileUpload(form.image)
-            const res = await httpCommon.post('/faults/create', form);
-            hidePopup()
-
-        } catch (err) {
-            console.error('error creating fault', err);
-        }
-    }
 
     useEffect(() => {
         const getFaultType = async () => {
@@ -34,12 +24,12 @@ export default function FaultPopup({ name, handleFileUpload, hidePopup }) {
     return (
         <>
             <Title>{name}</Title>
-            <BasicInput values={values} name='שם' value='name' />
-            <BasicInput values={values} name='תיאור' value='description' />
-            <BasicInput values={values} name='פתרון' value='solution' />
+            <BasicInput values={values} title='שם' name='name' />
+            <BasicInput values={values} title='תיאור' name='description' />
+            <BasicInput values={values} title='פתרון' name='solution' />
             <FileInput values={values} name='תמונה' value='image' />
-            <SelectInput values={values} name='קטגוריה' data={faultType} value='typeId' />
-            <div onClick={() => createFault(values)}>submit</div>
+            <SelectInput values={values} name='קטגוריה' data={faultType} value='type' />
+            <div onClick={() => submit(values)}>submit</div>
         </>
     )
 }
