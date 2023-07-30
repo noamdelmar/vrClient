@@ -13,7 +13,7 @@ import Fault from './Fault';
 
 export default function Admin() {
     const { showPopup, hidePopup, isPopupShown } = useAppContext();
-    const [selectedPage, setSelctedPage] = useState('fault');
+    const [selectedPage, setSelctedPage] = useState('faultType');
 
     const handleFileUpload = async (image) => {
         try {

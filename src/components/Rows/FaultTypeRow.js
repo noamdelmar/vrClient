@@ -1,13 +1,12 @@
 import React, { useState } from "react";
-import { Container, Item, DropDown, DropItem } from './styles';
+import { Container, Item } from './styles';
 import TypePopup from "../CreatePopup/popup/TypePopup";
 import httpCommon from "../../services/http-common";
 import { useAppContext } from '../../context/popup/popup_context_provider';
-import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
+import More from "../More/More";
 
 export default function FaultTypeRow({ type }) {
-    const [open, setOpen] = useState(false);
-    const { showPopup, hidePopup } = useAppContext();
+    const { showPopup } = useAppContext();
 
     const updateFaultType = async (update) => {
         const updateData = Object.keys(update);
@@ -39,15 +38,10 @@ export default function FaultTypeRow({ type }) {
         <Container>
             <Item>{type.name}</Item>
             <Item>{type.description}</Item>
-            <Item styles={{ color: '#d3d3d4' }} onMouseOver={() => setOpen(true)} onMouseOut={() => setOpen(false)} >
-                <MoreHorizIcon />
-                {open ?
-                    <DropDown>
-                        <DropItem onClick={() => showPopup(<TypePopup name='יצירת סוג תקלה' existingType={type} submit={updateFaultType} />)}>edit</DropItem>
-                        <DropItem onClick={() => deleteFaultType()}>delete</DropItem>
-                    </DropDown> : null
-                }
-            </Item>
+            <More
+                handleEdit={() => showPopup(<TypePopup name='יצירת סוג תקלה' existingType={type} submit={updateFaultType} />)}
+                handleDelete={() => deleteFaultType()}
+            />
         </Container>
     )
 }

@@ -11,10 +11,27 @@ export const WhiteContainer = styled.div(() => ({
     overflowY: 'auto'
 }))
 
-export const Container = styled.div(() => ({
+export const Container = styled.div((porps) => ({
     width: '80%',
     height: '100%',
     backgroundColor: '#eaebef',
     textAlign: '-webkit-center',
-    position: 'fixed'
+    position: 'fixed',
+    ...porps.styles
 }))
+
+export const SearchContainer = styled.div(() => ({
+    display: 'flex',
+    alignItems: 'center',
+    textAlignLast: 'justify',
+    paddingBottom: '1rem'
+}))
+
+export const Title = styled.h1(() => ({
+    fontSize: '1rem',
+    fontWeight: 'bold',
+    width: '4.2rem',
+    direction: 'rtl',
+    paddingRight: '1rem'
+}));
+

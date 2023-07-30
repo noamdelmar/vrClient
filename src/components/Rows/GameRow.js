@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { Container, Item, Image, DropDown, DropItem } from './styles';
+import { Container, Item, Image } from './styles';
 import httpCommon from '../../services/http-common';
-import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import GamePopup from '../CreatePopup/popup/GamePopup';
 import { useAppContext } from '../../context/popup/popup_context_provider';
+import More from '../More/More';
 
 export default function GameRow({ game, handleFileUpdate }) {
     const { showPopup, hidePopup } = useAppContext();
     const [image, setImage] = useState();
-    const [open, setOpen] = useState(false);
     const [tag, setTag] = useState();
     const imageId = game['image'];
 
@@ -31,6 +30,7 @@ export default function GameRow({ game, handleFileUpdate }) {
                             value: game['id']
                         }
                     });
+                    console.log(response.data);
                     const data = response.data.rows[0].name;
                     setTag(data)
                 } catch (err) {
@@ -54,11 +54,9 @@ export default function GameRow({ game, handleFileUpdate }) {
                 return { id: update['id'], name: key, value: update[key] };
             }
         });
-        console.log(dataArray);
         dataArray.map(async (data) => {
             if (data) {
                 try {
-                    console.log(data);
                     await httpCommon.put('games/update', data);
                     hidePopup()
                 } catch (err) {
@@ -102,16 +100,11 @@ export default function GameRow({ game, handleFileUpdate }) {
             <Item><Image src={`data:image/jpeg;base64,${image}`} /></Item>
             <Item>{game.estimated_time}</Item>
             <Item>{tag}</Item>
-            <Item>פרסם/הסתר</Item>
-            <Item styles={{ color: '#d3d3d4' }} onMouseOver={() => setOpen(true)} onMouseOut={() => setOpen(false)} >
-                <MoreHorizIcon />
-                {open ?
-                    <DropDown>
-                        <DropItem onClick={() => showPopup(<GamePopup name='עריכת משחק' submit={updateGame} game={game} />)}>edit</DropItem>
-                        <DropItem onClick={() => deleteGame()}>delete</DropItem>
-                    </DropDown> : null
-                }
-            </Item>
+            <Item>{game.visible ? 'מפורסם' : 'מוסתר'}</Item>
+            <More
+                handleEdit={() => showPopup(<GamePopup name='עריכת משחק' submit={updateGame} game={game} />)}
+                handleDelete={() => deleteGame()}
+            />
         </Container>
     )
 }

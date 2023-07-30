@@ -1,13 +1,12 @@
 import React, { useState } from "react";
-import { Container, Item, DropDown, DropItem } from './styles';
+import { Container, Item } from './styles';
 import TypePopup from "../CreatePopup/popup/TypePopup";
 import httpCommon from "../../services/http-common";
 import { useAppContext } from '../../context/popup/popup_context_provider';
-import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
+import More from "../More/More";
 
 export default function TagRow({ tag }) {
-    const [open, setOpen] = useState(false);
-    const { showPopup, hidePopup } = useAppContext();
+    const { showPopup } = useAppContext();
 
     const updateTag = async (update) => {
         const updateData = Object.keys(update);
@@ -37,15 +36,10 @@ export default function TagRow({ tag }) {
         <Container>
             <Item>{tag.name}</Item>
             <Item>{tag.description}</Item>
-            <Item styles={{ color: '#d3d3d4' }} onMouseOver={() => setOpen(true)} onMouseOut={() => setOpen(false)} >
-                <MoreHorizIcon />
-                {open ?
-                    <DropDown>
-                        <DropItem onClick={() => showPopup(<TypePopup name='יצירת קטגוריה' existingType={tag} submit={updateTag} />)}>edit</DropItem>
-                        <DropItem onClick={() => deleteTag()}>delete</DropItem>
-                    </DropDown> : null
-                }
-            </Item>
+            <More
+                handleEdit={() => showPopup(<TypePopup name='יצירת קטגוריה' existingType={tag} submit={updateTag} />)}
+                handleDelete={() => deleteTag()}
+            />
         </Container>
     )
 }

@@ -8,7 +8,8 @@ export const Container = styled.div(() => ({
     top: '0',
     right: '0',
     zIndex: '1',
-    backgroundColor: 'white'
+    backgroundColor: 'white',
+    boxShadow: 'rgba(0, 0, 0, 0.24) 0px 3px 8px'
 }));
 
 export const Route = styled.div((props) => ({

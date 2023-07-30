@@ -24,3 +24,22 @@ export const Title = styled.h1(() => ({
     width: '100%'
 }));
 
+export const SaveButton = styled.div(() => ({
+    width: '5rem',
+    height: '2rem',
+    borderRadius: '1rem',
+    backgroundColor: 'rgb(30, 37, 246)',
+    color: 'white',
+    textAlign: 'center',
+    lineHeight: '2',
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    marginBottom: '1rem',
+    marginTop: '1.5rem',
+    cursor: 'pointer',
+    transition: '.3s',
+    fontWeight: 'bold',
+    ':hover': {
+        backgroundColor: '#6e6e6e'
+    }
+}));

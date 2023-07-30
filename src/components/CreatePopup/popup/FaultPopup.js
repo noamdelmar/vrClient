@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Title } from './styles';
+import { Title, SaveButton } from './styles';
 import BasicInput from '../../Input/BasicInput';
 import FileInput from '../../Input/FileInput';
 import SelectInput from '../../Input/SelectInput';
@@ -29,7 +29,7 @@ export default function FaultPopup({ name, submit, existingFault }) {
             <BasicInput values={values} title='פתרון' name='solution' />
             <FileInput values={values} name='תמונה' value='image' />
             <SelectInput values={values} name='קטגוריה' data={faultType} value='type' />
-            <div onClick={() => submit(values)}>submit</div>
+            <SaveButton onClick={() => submit(values)}>שמור</SaveButton>
         </>
     )
 }

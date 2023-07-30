@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { Container, Item, Image, DropDown, DropItem } from './styles';
+import { Container, Item, Image } from './styles';
 import httpCommon from '../../services/http-common';
-import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import FaultPopup from '../CreatePopup/popup/FaultPopup';
 import { useAppContext } from '../../context/popup/popup_context_provider';
+import More from '../More/More';
 
 export default function GameRow({ fault, handleFileUpdate }) {
     const { showPopup, hidePopup } = useAppContext();
     const [image, setImage] = useState();
-    const [open, setOpen] = useState(false);
     const [faultType, setFaultType] = useState();
     const imageId = fault['image'];
 
@@ -67,7 +66,7 @@ export default function GameRow({ fault, handleFileUpdate }) {
         }
     };
 
-    const deleteGame = async () => {
+    const deleteFault = async () => {
         try {
             const id = fault.id;
             const res = await httpCommon.delete(`/faults/delete?id=${id}`);
@@ -84,15 +83,10 @@ export default function GameRow({ fault, handleFileUpdate }) {
             <Item>{fault.solution}</Item>
             <Item><Image src={`data:image/jpeg;base64,${image}`} /></Item>
             <Item>{faultType}</Item>
-            <Item styles={{ color: '#d3d3d4' }} onMouseOver={() => setOpen(true)} onMouseOut={() => setOpen(false)} >
-                <MoreHorizIcon />
-                {open ?
-                    <DropDown>
-                        <DropItem onClick={() => showPopup(<FaultPopup name='עריכת תקלה' existingFault={fault} submit={updateFault} />)}>edit</DropItem>
-                        <DropItem onClick={() => deleteGame()}>delete</DropItem>
-                    </DropDown> : null
-                }
-            </Item>
+            <More
+                handleEdit={() => showPopup(<FaultPopup name='עריכת תקלה' existingFault={fault} submit={updateFault} />)}
+                handleDelete={() => deleteFault()}
+            />
         </Container>
     )
 }

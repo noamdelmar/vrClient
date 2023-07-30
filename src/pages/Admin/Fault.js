@@ -1,28 +1,34 @@
 import React, { useEffect, useState } from 'react';
 import { useAppContext } from '../../context/popup/popup_context_provider';
 import httpCommon from '../../services/http-common';
-import { WhiteContainer, Container } from './styles';
+import { WhiteContainer, Container, SearchContainer, Title } from './styles';
 import FaultRow from '../../components/Rows/FaultRow';
 import FaultPopup from '../../components/CreatePopup/popup/FaultPopup';
+import TitleRow from '../../components/Rows/TitleRow';
+import Search from '../../components/Search/Search';
+import AddButton from '../../components/AddButton/AddButton';
 
 export default function Fault({ handleFileUpload, handleFileUpdate }) {
     const { showPopup, hidePopup } = useAppContext();
-    const [existingFault, setFault] = useState();
+    const [existingFault, setExistingFault] = useState();
+    const [faults, setFaults] = useState();
+    const TITLES = ['שם', 'תיאור', 'פתרון', 'תמונה', 'קטגוריה', '']
 
     useEffect(() => {
+        //GET ALL FAULTS
         const getFault = async () => {
             try {
                 const res = await httpCommon.get('/faults/get')
-                setFault(res.data);
+                setExistingFault(res.data);
+                setFaults(res.data)
             } catch (err) {
                 console.error('error retrieving fault: ', err);
             }
         }
-
         getFault()
     }, [])
 
-
+    //CREATE A NEW FAULT
     const createFault = async (form) => {
         try {
             form['image'] = await handleFileUpload(form.image)
@@ -34,16 +40,34 @@ export default function Fault({ handleFileUpload, handleFileUpdate }) {
         }
     }
 
+    //SEARCH FAULT BY QUERY
+    const handleSearch = (search) => {
+        const lowerCaseSearch = search.toLowerCase();
+        const queryArray = existingFault.filter(fault => fault.name.toLowerCase().includes(lowerCaseSearch));
+        setFaults(queryArray)
+    }
+
+    //SET FAULTS BACK TO ALL FAULTS
+    useEffect(() => {
+        if (faults?.length == 0) {
+            setFaults(existingFault)
+        }
+    }, [faults])
+
     return (
         <Container>
             <WhiteContainer>
-                <div>סוגי תקלות</div>
-                {existingFault?.map((fault) => {
+                <SearchContainer>
+                    <Search handleChange={handleSearch} />
+                    <Title> תקלות</Title>
+                </SearchContainer>
+                <TitleRow titles={TITLES} />
+                {faults?.map((fault) => {
                     return <FaultRow fault={fault} handleFileUpdate={handleFileUpdate} />
                 })}
+                <AddButton handleClick={() => showPopup(<FaultPopup name='יצירת תקלה' handleFileUpload={handleFileUpload} hidePopup={hidePopup} submit={createFault} />)} />
             </WhiteContainer>
-            <div onClick={() => showPopup(<FaultPopup name='יצירת תקלה' handleFileUpload={handleFileUpload} hidePopup={hidePopup} submit={createFault} />)}>יצירת תקלה</div>
-
+            {/* <div onClick={() => showPopup(<FaultPopup name='יצירת תקלה' handleFileUpload={handleFileUpload} hidePopup={hidePopup} submit={createFault} />)}>יצירת תקלה</div> */}
             {/* <div onClick={() => showPopup(<TypePopup name='יצירת סוג תקלה' submit={createFaultType} />)}>יצירת סוג תקלה</div> */}
         </Container>
     )

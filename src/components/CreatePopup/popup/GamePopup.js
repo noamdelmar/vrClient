@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Title } from './styles';
+import { Title, SaveButton } from './styles';
 import BasicInput from '../../Input/BasicInput';
 import FileInput from '../../Input/FileInput';
 import SelectInput from '../../Input/SelectInput';
@@ -30,7 +30,7 @@ export default function CreatePopup({ name, game, submit }) {
             <BasicInput values={values} title='זמן משוער' name={'estimated_time'} type='number' />
             <FileInput values={values} name='תמונה' value={'image'} />
             <SelectInput values={values} data={tags} value={'tagsId'} name='קטגוריה' />
-            <div onClick={() => submit(values)}>submit</div>
+            <SaveButton onClick={() => submit(values)}>שמור</SaveButton>
         </>
     )
 }
