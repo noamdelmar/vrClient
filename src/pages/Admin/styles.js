@@ -6,9 +6,8 @@ export const WhiteContainer = styled.div(() => ({
     backgroundColor: 'white',
     borderRadius: '1rem',
     textAlign: 'right',
-    marginTop: '2rem',
+    marginTop: '5rem',
     padding: '1.2rem',
-    overflowY: 'auto'
 }))
 
 export const Container = styled.div((porps) => ({
@@ -28,10 +27,16 @@ export const SearchContainer = styled.div(() => ({
 }))
 
 export const Title = styled.h1(() => ({
-    fontSize: '1rem',
+    fontSize: '1.1rem',
     fontWeight: 'bold',
-    width: '4.2rem',
+    width: '4.6rem',
     direction: 'rtl',
     paddingRight: '1rem'
 }));
 
+export const RowsContainers = styled.div(() => ({
+    borderBottom: '1px solid #d3d3d4',
+    borderTop: '1px solid #d3d3d4',
+    height: '68%',
+    overflowY: 'auto'
+}));

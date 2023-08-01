@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useAppContext } from '../../context/popup/popup_context_provider';
 import httpCommon from '../../services/http-common';
-import { WhiteContainer, Container, SearchContainer, Title } from './styles';
+import { WhiteContainer, Container, SearchContainer, Title, RowsContainers } from './styles';
 import FaultTypeRow from '../../components/Rows/FaultTypeRow';
 import TypePopup from '../../components/CreatePopup/popup/TypePopup';
 import TitleRow from '../../components/Rows/TitleRow';
@@ -58,9 +58,11 @@ export default function FaultType() {
                     <Title>סוגי תקלות</Title>
                 </SearchContainer>
                 <TitleRow titles={TITLES} />
-                {faultTypes?.map((type) => {
-                    return <FaultTypeRow type={type} />
-                })}
+                <RowsContainers>
+                    {faultTypes?.map((type) => {
+                        return <FaultTypeRow type={type} />
+                    })}
+                </RowsContainers>
                 <AddButton handleClick={() => showPopup(<TypePopup name='יצירת סוג תקלה' submit={createFaultType} />)} />
             </WhiteContainer>
         </Container>

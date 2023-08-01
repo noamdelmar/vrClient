@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useAppContext } from '../../context/popup/popup_context_provider';
 import GamePopup from '../../components/CreatePopup/popup/GamePopup';
 import httpCommon from '../../services/http-common';
-import { WhiteContainer, Container, SearchContainer, Title } from './styles';
+import { WhiteContainer, Container, SearchContainer, Title, RowsContainers } from './styles';
 import GameRow from '../../components/Rows/GameRow';
 import TitleRow from '../../components/Rows/TitleRow';
 import Search from '../../components/Search/Search';
@@ -37,10 +37,10 @@ export default function Games({ handleFileUpload, handleFileUpdate }) {
         try {
             form['image'] = await handleFileUpload(form.image)
             const res = await httpCommon.post('/games/create', form);
+            hidePopup()
         } catch (err) {
             console.error('error creating game', err);
         }
-        hidePopup()
     }
 
     //SEARCH GAME BY QUERY
@@ -66,9 +66,11 @@ export default function Games({ handleFileUpload, handleFileUpdate }) {
                     <Title>משחקים</Title>
                 </SearchContainer>
                 <TitleRow titles={TITLES} />
-                {games?.map((game) => {
-                    return <GameRow game={game} handleFileUpdate={handleFileUpdate} />
-                })}
+                <RowsContainers>
+                    {games?.map((game) => {
+                        return <GameRow game={game} handleFileUpdate={handleFileUpdate} />
+                    })}
+                </RowsContainers>
                 <AddButton handleClick={() => showPopup(<GamePopup name='יצירת משחק' submit={createGame} />)} />
             </WhiteContainer>
         </Container>

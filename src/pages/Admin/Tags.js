@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useAppContext } from '../../context/popup/popup_context_provider';
 import httpCommon from '../../services/http-common';
-import { WhiteContainer, Container, SearchContainer, Title } from './styles';
+import { WhiteContainer, Container, SearchContainer, Title, RowsContainers } from './styles';
 import TagRow from '../../components/Rows/TagRow';
 import TypePopup from '../../components/CreatePopup/popup/TypePopup';
 import TitleRow from '../../components/Rows/TitleRow';
@@ -60,9 +60,11 @@ export default function Tags() {
                     <Title>קטגוריות</Title>
                 </SearchContainer>
                 <TitleRow titles={TITLES} />
-                {tags?.map((tag) => {
-                    return <TagRow tag={tag} />
-                })}
+                <RowsContainers>
+                    {tags?.map((tag) => {
+                        return <TagRow tag={tag} />
+                    })}
+                </RowsContainers>
                 <AddButton handleClick={() => showPopup(<TypePopup name='יצירת קטגוריה' submit={createTag} />)} />
             </WhiteContainer>
         </Container>

@@ -1,7 +1,4 @@
 import React, { useState } from 'react';
-import GamePopup from '../../components/CreatePopup/popup/GamePopup';
-import FaultPopup from '../../components/CreatePopup/popup/FaultPopup';
-import TypePopup from '../../components/CreatePopup/popup/TypePopup';
 import { useAppContext } from '../../context/popup/popup_context_provider';
 import httpCommon from '../../services/http-common';
 import { PopupBack, Container } from '../Home/styles';
@@ -10,10 +7,13 @@ import Games from './Games';
 import Tags from './Tags';
 import FaultType from './FaultType';
 import Fault from './Fault';
+import { useMainContext } from '../../context/user/userContext';
+import { Navigate } from 'react-router-dom';
 
 export default function Admin() {
-    const { showPopup, hidePopup, isPopupShown } = useAppContext();
-    const [selectedPage, setSelctedPage] = useState('faultType');
+    const { hidePopup, isPopupShown } = useAppContext();
+    const [selectedPage, setSelctedPage] = useState('fault');
+    const user = JSON.parse(localStorage.getItem('user'));
 
     const handleFileUpload = async (image) => {
         try {
@@ -60,25 +60,7 @@ export default function Admin() {
         }
     }
 
-    const createTag = async (form) => {
-        try {
-            const res = await httpCommon.post('tags/create', form)
-            hidePopup()
-        } catch (err) {
-            console.error('error creating tag:', err);
-        }
-    }
-
-    const createFaultType = async (form) => {
-        try {
-            const res = await httpCommon.post('/faultTypes/create', form);
-            hidePopup()
-            console.log(res);
-        } catch (err) {
-            console.error('error creating fault type: ', err);
-        }
-
-    }
+    console.log(user);
 
     return (
         <Container>
@@ -97,6 +79,7 @@ export default function Admin() {
                 // <div onClick={() => showPopup(<TypePopup name='יצירת סוג תקלה' submit={createFaultType} hidePopup={hidePopup} />)}>יצירת סוג תקלה</div>
             }
             <PopupBack show={isPopupShown} onClick={() => hidePopup()}></PopupBack>
+            {!user ? <Navigate to={'/'} replace={true} /> : null}
             {/* <div onClick={() => showPopup(<CreatePopup name='יצירת קטגוריה' data={TAG} submit={createTag} />)}>יצירת קטגוריה</div> */}
         </Container>
     )

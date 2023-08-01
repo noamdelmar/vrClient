@@ -9,7 +9,7 @@ export const IconCircle = styled.div(() => ({
     transition: '.3s',
     cursor: 'pointer',
     textAlign: 'center',
-    bottom: '11rem',
+    bottom: '8rem',
     position: 'fixed',
     ':hover': {
         backgroundColor: '#6e6e6e'

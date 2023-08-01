@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { NameField, FlexContainer } from './styles';
-import Input from '@mui/material/Input';
+import { NameField, FlexContainer, ErrorMsg } from './styles';
+import Input from '@mui/material/Input'
 
-export default function BasicInput({ values, title, name, type = null }) {
+export default function BasicInput({ values, title, name, type = null, error, login }) {
     const [fieldValue, setFieldValue] = useState(values[name]);
 
     const handleChange = (e) => {
@@ -10,11 +10,21 @@ export default function BasicInput({ values, title, name, type = null }) {
         values[name] = e.target.value;
     };
 
-
     return (
-        <FlexContainer>
+        <FlexContainer login={login}>
             <NameField>{title}</NameField>
-            <Input name={name} onChange={handleChange} type={type} value={fieldValue} multiline />
+            <Input
+                error={error}
+                name={name}
+                onChange={handleChange}
+                type='number'
+                // type={type}
+                value={error ? '***שדה חובה' : fieldValue}
+                multiline
+                sx={{
+                    color: error ? 'rgb(211,47,47)' : 'black',
+                }}
+            />
         </FlexContainer>
     );
 }

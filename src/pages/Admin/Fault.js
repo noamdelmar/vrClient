@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useAppContext } from '../../context/popup/popup_context_provider';
 import httpCommon from '../../services/http-common';
-import { WhiteContainer, Container, SearchContainer, Title } from './styles';
+import { WhiteContainer, Container, SearchContainer, Title, RowsContainers } from './styles';
 import FaultRow from '../../components/Rows/FaultRow';
 import FaultPopup from '../../components/CreatePopup/popup/FaultPopup';
 import TitleRow from '../../components/Rows/TitleRow';
@@ -62,9 +62,11 @@ export default function Fault({ handleFileUpload, handleFileUpdate }) {
                     <Title> תקלות</Title>
                 </SearchContainer>
                 <TitleRow titles={TITLES} />
-                {faults?.map((fault) => {
-                    return <FaultRow fault={fault} handleFileUpdate={handleFileUpdate} />
-                })}
+                <RowsContainers>
+                    {faults?.map((fault) => {
+                        return <FaultRow fault={fault} handleFileUpdate={handleFileUpdate} />
+                    })}
+                </RowsContainers>
                 <AddButton handleClick={() => showPopup(<FaultPopup name='יצירת תקלה' handleFileUpload={handleFileUpload} hidePopup={hidePopup} submit={createFault} />)} />
             </WhiteContainer>
             {/* <div onClick={() => showPopup(<FaultPopup name='יצירת תקלה' handleFileUpload={handleFileUpload} hidePopup={hidePopup} submit={createFault} />)}>יצירת תקלה</div> */}

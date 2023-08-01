@@ -78,17 +78,15 @@ export default function GameRow({ game, handleFileUpdate }) {
     const deleteGame = async () => {
         try {
             const id = game.id;
-            const res = await httpCommon.delete(`/games/delete?id=${id}`);
+            await httpCommon.delete(`/games/delete?id=${id}`);
         } catch (err) {
             console.error('error deleting game: ', err);
         }
     }
 
     const updateGameTag = async (data) => {
-        console.log(data);
         try {
-            const res = await httpCommon.put('/gameTags/update', data);
-            console.log(res);
+            await httpCommon.put('/gameTags/update', data);
         } catch (err) {
             console.error('error updating game tag', err);
         }

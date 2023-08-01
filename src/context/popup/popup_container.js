@@ -1,18 +1,21 @@
 import React from 'react';
 import { useAppContext } from './popup_context_provider';
-import { PopupContainerStyle, FlexContainer } from '../../components/CreatePopup/popup/styles';
+import { PopupContainerStyle, FlexContainer, BlackBack } from '../../components/CreatePopup/popup/styles';
 
 const PopupContainer = () => {
-    const { isPopupShown, component } = useAppContext();
+    const { isPopupShown, component, hidePopup } = useAppContext();
 
     if (!isPopupShown) return null;
 
     return (
-        <FlexContainer>
-            <PopupContainerStyle>
-                {component}
-            </PopupContainerStyle>
-        </FlexContainer>
+        <>
+            <BlackBack onClick={hidePopup} />
+            <FlexContainer>
+                <PopupContainerStyle>
+                    {component}
+                </PopupContainerStyle>
+            </FlexContainer>
+        </>
     )
 }
 

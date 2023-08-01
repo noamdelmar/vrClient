@@ -1,9 +1,18 @@
 import styled from 'styled-components'
 
+export const BlackBack = styled.div(() => ({
+    width: '100vw',
+    height: '100vh',
+    backgroundColor: 'rgba(0,0,0,.3)',
+    position: 'absolute',
+    top: '0',
+    left: '0'
+}));
+
 export const FlexContainer = styled.div(() => ({
     width: '100%',
     display: 'flex',
-    justifyContent: 'center'
+    justifyContent: 'center',
 }));
 
 export const PopupContainerStyle = styled.div(() => ({
@@ -15,7 +24,8 @@ export const PopupContainerStyle = styled.div(() => ({
     borderRadius: '1rem',
     position: 'absolute',
     marginLeft: 'auto',
-    marginRight: 'auto'
+    marginRight: 'auto',
+    marginTop: '4rem'
 }));
 
 export const Title = styled.h1(() => ({
@@ -24,7 +34,7 @@ export const Title = styled.h1(() => ({
     width: '100%'
 }));
 
-export const SaveButton = styled.div(() => ({
+export const SaveButton = styled.div((props) => ({
     width: '5rem',
     height: '2rem',
     borderRadius: '1rem',
@@ -41,5 +51,6 @@ export const SaveButton = styled.div(() => ({
     fontWeight: 'bold',
     ':hover': {
         backgroundColor: '#6e6e6e'
-    }
+    },
+    ...props.styles
 }));
